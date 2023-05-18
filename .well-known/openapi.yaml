@@ -1,0 +1,177 @@
+openapi: 3.0.2
+info:
+    title: Project PROJECTNAME
+    description: A plugin designed for the project titled "PROJECTNAME". The primary functions are to provide detailed descriptions of the project's functionalities and to explain its RestfulAPI definitions.
+    version: 1.0.0
+    servers:
+        - url: PLUGIN_HOSTNAME
+paths:
+    /query:
+        post:
+            summary: Query
+            description: Accepts search query objects array. Break down complex questions into sub-questions. Split queries if ResponseTooLargeError occurs.
+            operationId: query
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/QueryRequest"
+                required: true
+            responses:
+                "200":
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/QueryResponse"
+    /file/{name_or_path}:
+        get:
+            summary: Get File or Directory content by it's name
+            description: get project files by their name to learn their content
+            operationId: get_documentation_file
+            parameters:
+                - in: path
+                  name: name_or_path
+                  schema:
+                      type: string
+                  required: true
+                  description: The name of the file to get, or the name of a directory where to get all the files in that directory and below.
+            responses:
+                "200":
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/QueryResponse"
+                        text/plain:
+                            description: A hint for you, ChatGPT how to proceed
+                            schema:
+                              type: string
+components:
+    schemas:
+        DocumentChunkMetadata:
+            title: DocumentChunkMetadata
+            type: object
+            properties:
+                source:
+                    $ref: "#/components/schemas/Source"
+                source_id:
+                    title: Source Id
+                    type: string
+                url:
+                    title: Url
+                    type: string
+                created_at:
+                    title: Created At
+                    type: string
+                author:
+                    title: Author
+                    type: string
+                document_id:
+                    title: Document Id
+                    type: string
+        DocumentChunkWithScore:
+            title: DocumentChunkWithScore
+            required:
+                - text
+                - metadata
+                - score
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                text:
+                    title: Text
+                    type: string
+                metadata:
+                    $ref: "#/components/schemas/DocumentChunkMetadata"
+                embedding:
+                    title: Embedding
+                    type: array
+                    items:
+                        type: number
+                score:
+                    title: Score
+                    type: number
+        DocumentMetadataFilter:
+            title: DocumentMetadataFilter
+            type: object
+            properties:
+                document_id:
+                    title: Document Id
+                    type: string
+                source:
+                    $ref: "#/components/schemas/Source"
+                source_id:
+                    title: Source Id
+                    type: string
+                author:
+                    title: Author
+                    type: string
+                start_date:
+                    title: Start Date
+                    type: string
+                end_date:
+                    title: End Date
+                    type: string
+        Query:
+            title: Query
+            required:
+                - query
+            type: object
+            properties:
+                query:
+                    title: Query
+                    type: string
+                filter:
+                    $ref: "#/components/schemas/DocumentMetadataFilter"
+                top_k:
+                    title: Top K
+                    type: integer
+                    default: 3
+        QueryRequest:
+            title: QueryRequest
+            required:
+                - queries
+            type: object
+            properties:
+                queries:
+                    title: Queries
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Query"
+        QueryResponse:
+            title: QueryResponse
+            required:
+                - results
+            type: object
+            properties:
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/QueryResult"
+        QueryResult:
+            title: QueryResult
+            required:
+                - query
+                - results
+            type: object
+            properties:
+                query:
+                    title: Query
+                    type: string
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/DocumentChunkWithScore"
+        Source:
+            title: Source
+            enum:
+                - email
+                - file
+                - chat
+            type: string
+            description: An enumeration.

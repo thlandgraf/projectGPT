@@ -1,0 +1,16 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "PROJECTNAME",
+    "name_for_model": "project_PROJECTNAME",
+    "description_for_human": "Plugin for managing the project PROJECTNAME",
+    "description_for_model": "Plugin for managing the project PROJECTNAME, you can: ask for descriptions and Restful API definitions.",
+    "auth": { "type": "none" },
+    "api": {
+        "type": "openapi",
+        "url": "PLUGIN_HOSTNAME/openapi.yaml",
+        "is_user_authenticated": false
+    },
+    "logo_url": "PLUGIN_HOSTNAME/logo.png",
+    "contact_email": "tl@digital-dividend.de",
+    "legal_info_url": "https://github.com/thlandgraf/projectGPT/blob/main/LICENSE"
+}
