@@ -64,13 +64,50 @@ async def get_file(path_or_name):
                     "source_id": os.path.basename(file['filepath']),
                     "url": f"http://{host}/file{file['filepath'].replace(args.docpath,'',1)}",
                     "created_at": None,
-                    "author": None,
-                    "document_id": "4a3d5980-8dbc-433e-86ca-52811b5e0743"
+                    "author": None
                 },
             })
     if len(result) == 0:
         return "Nothing found, please use /query to search"
     return { "query": path_or_name, "results": result }
+
+@app.get("/sourcecode")
+async def get_sourcecode_tree():
+    global args
+    if(args.srcpath == None):
+        return "Tell the user: No source code path specified, please start projectGPT with the --srcpath argument to grant ChatGPT access to yout sourcefiles"
+    return get_sourcecode_tree(args.srcpath)
+
+@app.get("/sourcecode/<path:path>")
+async def get_sourcecode(path):
+    global args
+    host = request.headers['Host']
+    if(args.srcpath == None):
+        return "Tell the user: No source code path specified, please start projectGPT with the --srcpath argument to grant ChatGPT access to yout sourcefiles"
+    src = get_sourcecode_tree(args.srcpath)
+    if(path in src):
+        texts = [ load_file_data(os.path.join(args.srcpath,path)) ]
+    else:
+        # maybe we can do a partial search here
+        texts = []
+        for s in src:
+            if(path in s):
+                texts.append(load_file_data(os.path.join(args.srcpath,s)))
+    result = []
+    for text in texts:
+        result.append({
+            "text": text['text'],
+            "metadata": {
+                "source": "file",
+                "source_id": os.path.basename(text['filepath']),
+                "url": f"http://{host}/sourcecode{text['filepath'].replace(args.srcpath,'',1)}",
+                "created_at": None,
+                "author": None
+            },
+        })
+    if len(result) == 0:
+        return f"No sourcecode {path} found in directory {args.srcpath}, tell this the user"
+    return { "query": path, "results": result }
 
 @app.get("/logo.png")
 async def plugin_logo():
@@ -98,15 +135,21 @@ async def openapi_spec():
         text = text.replace("PLUGIN_HOSTNAME", f"http://{host}")
         text = text.replace("PROJECTNAME", args.name)
         return quart.Response(text, mimetype="text/yaml")
-    
+
+def get_sourcecode_tree(root_dir):
+    file_paths = []
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        for filename in filenames:
+            rel_dir = os.path.relpath(dirpath, root_dir)
+            rel_file = os.path.join(rel_dir, filename)
+            file_paths.append(rel_file)
+    return file_paths
+
 def load_file_data(filepath):
     with open(filepath, 'r') as f:
         text = f.read()
     last_modified = datetime.datetime.fromtimestamp(os.path.getmtime(filepath))
     return {'filepath': filepath, 'last_modified': last_modified, 'text': text}
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import os
 
 def best_matches(search_string, top_n=3):
     global files
@@ -179,6 +222,7 @@ def main():
     parser.add_argument("--docpath", required=True, help="the directory where the definitions and descriptions will be stored")    
     parser.add_argument("--name", required=True, help="name of the project")    
     parser.add_argument("--port", required=False, help="port to serve on", default=5002)    
+    parser.add_argument("--srcpath", required=False, help="the directory where the source code is stored")    
     args = parser.parse_args()
     monitoring_thread = threading.Thread(target=check_files)
     monitoring_thread.start()

@@ -60,6 +60,48 @@ paths:
                             description: A hint for you, ChatGPT how to proceed
                             schema:
                               type: string
+    /sourcecode:
+        get:
+            summary: Get Sourcecode Tree
+            description:  get the file tree of all sourcecode available in the project
+            operationId: get_sourcecode_tree
+            responses:
+                "200":
+                    description: Successful Response
+                    content:
+                        application/json:
+                            description: The List of all sourcecode file known to the project
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                        text/plain:
+                            description: A hint for you, ChatGPT how to proceed
+                            schema:
+                              type: string
+    /sourcecode/{name_or_path}:
+        get:
+            summary: Get sourcecode file
+            description: get a sourcecode file from the project
+            operationId: get_sourcecode_file
+            parameters:
+                - in: path
+                  name: name_or_path
+                  schema:
+                      type: string
+                  required: true
+                  description: The name of the sourcecode to get
+            responses:
+                "200":
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/QueryResponse"
+                        text/plain:
+                            description: A hint for you, ChatGPT how to proceed
+                            schema:
+                              type: string
 components:
     schemas:
         DocumentChunkMetadata:
@@ -98,11 +140,6 @@ components:
                     type: string
                 metadata:
                     $ref: "#/components/schemas/DocumentChunkMetadata"
-                embedding:
-                    title: Embedding
-                    type: array
-                    items:
-                        type: number
                 score:
                     title: Score
                     type: number

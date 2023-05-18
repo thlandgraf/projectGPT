@@ -54,8 +54,34 @@ read the documentation on midjourney
 ```
 
 ```
-I want to create the pictures for the carousel so please write me the midjourney prompts with the given colors and aesthetics
+I want to create the pictures for the carousel so please write me the midjourney prompts with the given colors and aesthetics.
 ```
+
+# Continue refining the source code
+Alright, now we're ready to dive in and take our development process to the next level. We're about to combine refining documentation and writing code, with the assistance of ChatGPT.
+
+I've put together a functionality that serves your source code directly to ChatGPT. So, not only will you have instant access to your docs, but your code as well, right in the same space.
+
+Imagine this - you're working on a tricky piece of code, but you're stuck. Instead of flipping between your IDE and your documents, everything you need is right there with you in the chat.
+
+You can query your project documentation, refine it, and get coding suggestions, all in one go. It's an entirely different way to interact with your projects and I think it's going to make a massive difference.
+
+Let's assume, you created the angular project and your source is ```../interstallar_voyages/src```
+## Start projectGPT with a link to the sourcecode
+```bash
+python projectGPT.py --docpath examples/website --name interstallar_voyages --port 3334 --srcpath ../interstallar_voyages/src
+```
+after updating the file ```app.component.html``` as described in the workflow above and saving it to disk.
+
+Ask ChatGPT, which source files are known:
+```
+Which source code do you know?
+```
+... you should get a list of the projectfiles. Now work with them:
+```
+Act as a senior developer and give me advice to improve my sourcecode app.component.html 
+```
+
 # How to Continue and what I learned so far
 As this project continues to evolve, I've come to realize the value of putting a little extra effort into documentation over source code. It's all about achieving clarity and mutual understanding, which, in turn, leads to more effective collaboration.
 
