@@ -24,6 +24,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/QueryResponse"
+    /file:
+        get:
+            summary: list of avalilable documents
+            description:  get a list, which documentation is available
+            operationId: get_documentation_list
+            responses:
+                "200":
+                    description: Successful Response
+                    content:
+                        text/plain:
+                            description: The list of all available documents for this project
+                            schema:
+                              type: string
     /file/{name_or_path}:
         get:
             summary: Get File or Directory content by it's name
@@ -75,7 +88,6 @@ components:
             required:
                 - text
                 - metadata
-                - score
             type: object
             properties:
                 id:
@@ -94,27 +106,6 @@ components:
                 score:
                     title: Score
                     type: number
-        DocumentMetadataFilter:
-            title: DocumentMetadataFilter
-            type: object
-            properties:
-                document_id:
-                    title: Document Id
-                    type: string
-                source:
-                    $ref: "#/components/schemas/Source"
-                source_id:
-                    title: Source Id
-                    type: string
-                author:
-                    title: Author
-                    type: string
-                start_date:
-                    title: Start Date
-                    type: string
-                end_date:
-                    title: End Date
-                    type: string
         Query:
             title: Query
             required:
@@ -124,12 +115,6 @@ components:
                 query:
                     title: Query
                     type: string
-                filter:
-                    $ref: "#/components/schemas/DocumentMetadataFilter"
-                top_k:
-                    title: Top K
-                    type: integer
-                    default: 3
         QueryRequest:
             title: QueryRequest
             required:
@@ -170,8 +155,6 @@ components:
         Source:
             title: Source
             enum:
-                - email
                 - file
-                - chat
             type: string
             description: An enumeration.

@@ -1,2 +1,5 @@
 .vscode
 .venv
+todo.md
+examples/projectGPT
+__pycache__

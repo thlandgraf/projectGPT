@@ -29,7 +29,7 @@ to start up the script, now it is serving the api on pert 3334 of your localhost
 5. enter ```localhost:3334```
 
 
-# Start Chatting
+# Start Prompting
 prompt as follows:
 ```
 I want to start working on the project interstellar_voyages please read Readme.md 
@@ -64,5 +64,14 @@ My projects often find me oscillating between refining design-level documentatio
 As a newcomer to ChatGPT plug-in development, this project has been a real learning experience, especially in terms of interacting with an LLM over an API. The learning curve has been steep but rewarding. I hope this tool proves to be as useful for you as it has been for me.
 
 Feel free to dive in, explore, tweak, and test it. And if you have any thoughts or ideas about it, or just want to discuss ChatGPT and AI in development further, don't hesitate to get in touch. The exchange of ideas is what drives progress, and I'd be delighted to hear from fellow developers who are interested in this space. Here's to pushing boundaries and coding smarter!
+
+# Current Challenges
+Alright, let me give you a rundown of the hurdles I'm currently facing. The big one right now is making the script more dynamic. At the moment, when I initiate a new chat, the script fetches all my documents, which works fine for now. But, as we all know, code and documentation are like rabbits - they multiply.
+
+As the project documentation continues to grow, it's not going to be feasible to fetch everything all at once. That kind of approach will get unwieldy and slow, not to mention potentially eating up a good chunk of resources.
+
+The ideal scenario here is to load the documents on an as-needed basis. This way, we can keep things efficient and only pull in what we actually need at any given moment. The challenge lies in figuring out the most efficient way to implement this without sacrificing the utility of having readily accessible documentation.
+
+It's a bit of a head-scratcher, and I'm still exploring the best way to handle it. The objective is clear, but the path to it? That's what I'm currently working on deciphering. Any insights or suggestions are more than welcome. Let's crack this nut together.
 
 

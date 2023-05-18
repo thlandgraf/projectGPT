@@ -3,7 +3,7 @@
     "name_for_human": "PROJECTNAME",
     "name_for_model": "project_PROJECTNAME",
     "description_for_human": "Plugin for managing the project PROJECTNAME",
-    "description_for_model": "Plugin for managing the project PROJECTNAME, you can: ask for descriptions and Restful API definitions.",
+    "description_for_model": "Plugin for managing the project PROJECTNAME, you can: ask for project documentation such as guidelines, descriptions and Restful API definitions.",
     "auth": { "type": "none" },
     "api": {
         "type": "openapi",

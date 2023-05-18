@@ -46,6 +46,10 @@ async def query():
         abort(500)
 
 @app.get("/file")
+async def get_all_files():
+    global files
+    return 'In this project, the following documents are available:' + ', '.join([ os.path.basename(file["filepath"]) for file in files])
+
 @app.get("/file/<string:path_or_name>")
 async def get_file(path_or_name):
     global files, args
