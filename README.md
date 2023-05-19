@@ -13,7 +13,7 @@ If you're looking for a smarter way to manage your coding workflow, give this a 
 Setup your virtual environment (recommended)
 ```bash
 virtualenv .venv
-source .venv/bin/activate to enter the virtual environment
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 # Run
